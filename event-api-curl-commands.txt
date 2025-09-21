@@ -1,0 +1,33 @@
+# CURL Commands for Event Management API
+
+# 1. Register Organizer
+curl -X POST http://localhost:3001/api/register -H "Content-Type: application/json" -d '{"username":"organizer1","password":"password123","email":"organizer1@example.com","role":"organizer"}'
+
+# 2. Register Attendee
+curl -X POST http://localhost:3001/api/register -H "Content-Type: application/json" -d '{"username":"attendee1","password":"password123","email":"attendee1@example.com","role":"attendee"}'
+
+# 3. Login (Organizer)
+curl -X POST http://localhost:3001/api/login -H "Content-Type: application/json" -d '{"username":"organizer1","password":"password123"}'
+# Save the token from the response as ORGANIZER_TOKEN
+
+# 4. Login (Attendee)
+curl -X POST http://localhost:3001/api/login -H "Content-Type: application/json" -d '{"username":"attendee1","password":"password123"}'
+# Save the token from the response as ATTENDEE_TOKEN
+
+# 5. Create Event (Organizer Only)
+curl -X POST http://localhost:3001/api/events -H "Content-Type: application/json" -H "Authorization: Bearer ORGANIZER_TOKEN" -d '{"date":"2025-10-01","time":"18:00","description":"Virtual Tech Meetup"}'
+
+# 6. Get All Events
+curl -X GET http://localhost:3001/api/events -H "Authorization: Bearer ORGANIZER_TOKEN"
+
+# 7. Update Event (Organizer Only)
+curl -X PUT http://localhost:3001/api/events/1 -H "Content-Type: application/json" -H "Authorization: Bearer ORGANIZER_TOKEN" -d '{"description":"Updated Tech Meetup"}'
+
+# 8. Delete Event (Organizer Only)
+curl -X DELETE http://localhost:3001/api/events/1 -H "Authorization: Bearer ORGANIZER_TOKEN"
+
+# 9. Register for Event (Attendee)
+curl -X POST http://localhost:3001/api/events/1/register -H "Authorization: Bearer ATTENDEE_TOKEN"
+
+# 10. Get My Registered Events (Attendee)
+curl -X GET http://localhost:3001/api/events/me -H "Authorization: Bearer ATTENDEE_TOKEN"
